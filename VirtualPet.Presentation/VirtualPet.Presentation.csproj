@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\VirtualPet.Application\VirtualPet.Application.csproj" />
     <ProjectReference Include="..\VirtualPet.Infrastructure\VirtualPet.Infrastructure.csproj" />
+    <ProjectReference Include="..\VirtualPet.Domain\VirtualPet.Domain.csproj" />
   </ItemGroup>
 
 </Project>
