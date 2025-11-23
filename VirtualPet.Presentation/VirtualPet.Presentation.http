@@ -1,0 +1,6 @@
+@VirtualPet.Presentation_HostAddress = http://localhost:5225
+
+GET {{VirtualPet.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
