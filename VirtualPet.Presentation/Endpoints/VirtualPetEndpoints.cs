@@ -7,28 +7,22 @@ public static class VirtualPetEndpoints
     public static void MapVirtualPetEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/api/pets")
-            .WithName("Virtual Pets")
-            .WithOpenApi();
+            .WithName("Virtual Pets");
 
         group.MapGet("/", GetPets)
-            .WithName("Get all pets")
-            .WithOpenApi();
+            .WithName("Get all pets");
 
         group.MapGet("/{id}", GetPetById)
-            .WithName("Get pet by ID")
-            .WithOpenApi();
+            .WithName("Get pet by ID");
 
         group.MapPost("/", CreatePet)
-            .WithName("Create pet")
-            .WithOpenApi();
+            .WithName("Create pet");
 
         group.MapPut("/{id}", UpdatePet)
-            .WithName("Update pet")
-            .WithOpenApi();
+            .WithName("Update pet");
 
         group.MapDelete("/{id}", DeletePet)
-            .WithName("Delete pet")
-            .WithOpenApi();
+            .WithName("Delete pet");
     }
 
     private static IResult GetPets() => Results.Ok();
