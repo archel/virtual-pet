@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-
 namespace VirtualPet.Presentation.Endpoints;
 
 public static class VirtualPetEndpoints
@@ -27,11 +25,11 @@ public static class VirtualPetEndpoints
 
     private static IResult GetPets() => Results.Ok();
 
-    private static IResult GetPetById(int id) => Results.Ok();
+    private static IResult GetPetById(Guid id) => Results.Ok();
 
     private static IResult CreatePet() => Results.Created();
 
-    private static IResult UpdatePet(int id) => Results.NoContent();
+    private static IResult UpdatePet(Guid id) => Results.NoContent();
 
-    private static IResult DeletePet(int id) => Results.NoContent();
+    private static IResult DeletePet(Guid id) => Results.NoContent();
 }
