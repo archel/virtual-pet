@@ -1,3 +1,8 @@
+using System.Windows.Input;
+
+using VirtualPet.Application.Commands;
+using VirtualPet.Presentation.Requests;
+
 namespace VirtualPet.Presentation.Endpoints;
 
 public static class VirtualPetEndpoints
@@ -27,7 +32,11 @@ public static class VirtualPetEndpoints
 
     private static IResult GetPetById(Guid id) => Results.Ok();
 
-    private static IResult CreatePet() => Results.Created();
+    private static IResult CreatePet(ICommandHandler<CreatePetCommand> createPetCommandHandler, CreatePetRequest request) {
+        var command = request.ToCommand();
+        createPetCommandHandler.HandleAsync(command, CancellationToken.None).GetAwaiter().GetResult();
+        return Results.Created($"/api/pets/{command.OwnerId}", null);
+    }
 
     private static IResult UpdatePet(Guid id) => Results.NoContent();
 

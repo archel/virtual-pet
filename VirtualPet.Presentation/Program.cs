@@ -1,3 +1,6 @@
+using VirtualPet.Application.Commands;
+using VirtualPet.Domain.Pet;
+using VirtualPet.Infrastructure.Pet;
 using VirtualPet.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails(o => o.CustomizeProblemDetails = c =>
         c.ProblemDetails.Instance = c.HttpContext.Request.Path);
+builder.Services.AddTransient<ICommandHandler<CreatePetCommand>, CreatePetCommandHandler>();
+builder.Services.AddSingleton<IPetRepository, InMemoryPetRepository>();
 
 var app = builder.Build();
 
@@ -25,3 +30,5 @@ app.MapVirtualPetEndpoints();
 app.MapHealthChecks("/health");
 
 app.Run();
+
+public partial class Program { }
