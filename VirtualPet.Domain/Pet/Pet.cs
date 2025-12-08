@@ -17,9 +17,9 @@ public class Pet
         Stats = stats;
     }
 
-    public static Pet Create(Guid ownerId, string name)
+    public static Pet Create(Guid id, Guid ownerId, string name)
     {
-        return new(Guid.NewGuid(), ownerId, PetName.Create(name), PetAge.Create(0), new PetStats(50, 50, 50, 100));
+        return new(id, ownerId, PetName.Create(name), PetAge.Create(0), new PetStats(50, 50, 50, 100));
     }
 
     public PetDto ToDto()

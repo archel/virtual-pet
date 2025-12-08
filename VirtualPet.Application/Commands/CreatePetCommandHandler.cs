@@ -8,20 +8,18 @@ public record CreatePetCommand(
 ) : ICommand;
 
 
-public class CreatePetCommandHandler(IPetRepository petRepository) : ICommandHandler<CreatePetCommand>
+public class CreatePetCommandHandler(IPetRepository petRepository, IGuidGenerator guidGenerator) : ICommandHandler<CreatePetCommand>
 {
-    private readonly IPetRepository _petRepository = petRepository;
-
     public async Task HandleAsync(CreatePetCommand command, CancellationToken cancellationToken)
-    {   
+    {
 
-        if (await _petRepository.GetByOwnerIdAsync(command.OwnerId, cancellationToken) is null)
+        if (await petRepository.GetByOwnerIdAsync(command.OwnerId, cancellationToken) is null)
         {
-            var pet = Pet.Create(command.OwnerId, command.Name);
-            await _petRepository.AddAsync(pet, cancellationToken);
+            var pet = Pet.Create(guidGenerator.NewGuid(), command.OwnerId, command.Name);
+            await petRepository.AddAsync(pet, cancellationToken);
             return;
         }
-        
-        throw new InvalidOperationException("Owner does not exist.");        
+
+        throw new InvalidOperationException("Owner does not exist.");
     }
 }

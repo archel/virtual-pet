@@ -13,7 +13,7 @@ public class InMemoryPetRepository : IPetRepository
         return Task.CompletedTask;
     }
 
-    Task<Domain.Pet.Pet?> IPetRepository.GetByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken)
+    public Task<Domain.Pet.Pet?> GetByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken)
     => _pets.TryGetValue(ownerId, out var pet) ?
             Task.FromResult<Domain.Pet.Pet?>(pet) :
             Task.FromResult<Domain.Pet.Pet?>(null);

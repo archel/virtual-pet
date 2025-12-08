@@ -13,6 +13,7 @@ builder.Services.AddProblemDetails(o => o.CustomizeProblemDetails = c =>
         c.ProblemDetails.Instance = c.HttpContext.Request.Path);
 builder.Services.AddTransient<ICommandHandler<CreatePetCommand>, CreatePetCommandHandler>();
 builder.Services.AddSingleton<IPetRepository, InMemoryPetRepository>();
+builder.Services.AddTransient<IGuidGenerator, GuidGenerator>();
 
 var app = builder.Build();
 

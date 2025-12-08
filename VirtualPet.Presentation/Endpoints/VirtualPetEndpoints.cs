@@ -1,5 +1,3 @@
-using System.Windows.Input;
-
 using VirtualPet.Application.Commands;
 using VirtualPet.Presentation.Requests;
 
