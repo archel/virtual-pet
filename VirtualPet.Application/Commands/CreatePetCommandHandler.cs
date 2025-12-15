@@ -20,6 +20,6 @@ public class CreatePetCommandHandler(IPetRepository petRepository, IGuidGenerato
             return;
         }
 
-        throw new InvalidOperationException("Owner does not exist.");
+        throw new InvalidOperationException("Owner already has a pet.");
     }
 }
