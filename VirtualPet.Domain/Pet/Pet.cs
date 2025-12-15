@@ -26,6 +26,31 @@ public class Pet
     {
         return new PetDto(Id, OwnerId, Name.Value, Age.Value, Stats.Hunger, Stats.Happiness, Stats.Energy, Stats.Health);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is not Pet other)
+        {
+            return false;
+        }
+
+        return Id == other.Id &&
+               OwnerId == other.OwnerId &&
+               Name.Value == other.Name.Value &&
+               Age.Value == other.Age.Value &&
+               Stats.Hunger == other.Stats.Hunger &&
+               Stats.Happiness == other.Stats.Happiness &&
+               Stats.Energy == other.Stats.Energy &&
+               Stats.Health == other.Stats.Health;
+    }
+    
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, OwnerId, Name, Age, Stats);
+    }
+
+    public static bool operator ==(Pet left, Pet right) => left.Equals(right);
+    public static bool operator !=(Pet left, Pet right) => !left.Equals(right);
 }
 
 internal record PetName

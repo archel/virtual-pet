@@ -34,9 +34,9 @@ public class CreatePetCommandTest
         // Assert
         var expectedPet = Pet.Create(petGuid, ownerId, "Buddy");
         await _petRepository
-            .Received(1)
+            .Received()
             .AddAsync(
-                Arg.Do<Pet>(pet => pet.Should().BeEquivalentTo(expectedPet)),
+                Arg.Is<Pet>(pet => pet == expectedPet),
                 cancellationToken
             );
     }
