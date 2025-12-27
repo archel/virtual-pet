@@ -28,17 +28,18 @@ public class CreatePetCommandTest
         var command = new CreatePetCommand(ownerId, "Buddy");
         var cancellationToken = CancellationToken.None;
         _petRepository.GetByOwnerIdAsync(ownerId, cancellationToken).Returns((Pet?)null);
+        Pet? capturedPet = null;
+        await _petRepository
+            .AddAsync(
+                Arg.Do<Pet>(pet => capturedPet = pet),
+                Arg.Is<CancellationToken>(ct => ct == cancellationToken)
+            );
 
         // Act
         await _handler.HandleAsync(command, cancellationToken);
         // Assert
         var expectedPet = Pet.Create(petGuid, ownerId, "Buddy");
-        await _petRepository
-            .Received()
-            .AddAsync(
-                Arg.Is<Pet>(pet => pet == expectedPet),
-                cancellationToken
-            );
+        capturedPet.Should().BeEquivalentTo(expectedPet);
     }
 
     [Fact]
