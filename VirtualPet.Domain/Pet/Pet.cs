@@ -27,7 +27,7 @@ public class Pet
         return new PetDto(Id, OwnerId, Name.Value, Age.Value, Stats.Hunger, Stats.Happiness, Stats.Energy, Stats.Health);
     }
 
-    public override bool Equals(object obj) => obj is Pet other && Id == other.Id &&
+    public override bool Equals(object? obj) => obj is Pet other && Id == other.Id &&
                OwnerId == other.OwnerId &&
                Name.Value == other.Name.Value &&
                Age.Value == other.Age.Value &&

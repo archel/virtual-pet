@@ -1,4 +1,5 @@
 using VirtualPet.Application.Commands;
+using VirtualPet.Application.Queries;
 using VirtualPet.Domain.Pet;
 using VirtualPet.Infrastructure.Pet;
 using VirtualPet.Presentation.Endpoints;
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails(o => o.CustomizeProblemDetails = c =>
         c.ProblemDetails.Instance = c.HttpContext.Request.Path);
 builder.Services.AddTransient<ICommandHandler<CreatePetCommand>, CreatePetCommandHandler>();
+builder.Services.AddTransient<IQueryHandler<GetPetQuery, PetDto>, GetPetQueryHandler>();
 builder.Services.AddSingleton<IPetRepository, InMemoryPetRepository>();
 builder.Services.AddTransient<IGuidGenerator, GuidGenerator>();
 

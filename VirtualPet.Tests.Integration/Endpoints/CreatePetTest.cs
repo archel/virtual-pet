@@ -33,7 +33,7 @@ public class CreatePetTest(WebApplicationTestFactory<Program> factory): IClassFi
         var response = await client.PostAsync("/api/pets", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"));
 
         // Assert
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        HttpStatusCode.Created.Should().Be(response.StatusCode);
         var pet = await _petRepository.GetByOwnerIdAsync(ownerId, CancellationToken.None);
         var expectedPet = Pet.Create(petGuid, ownerId, A_PET_NAME);
         pet.Should().BeEquivalentTo(expectedPet);

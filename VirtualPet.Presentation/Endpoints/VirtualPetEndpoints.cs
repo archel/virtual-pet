@@ -1,4 +1,6 @@
 using VirtualPet.Application.Commands;
+using VirtualPet.Application.Queries;
+using VirtualPet.Domain.Pet;
 using VirtualPet.Presentation.Requests;
 
 namespace VirtualPet.Presentation.Endpoints;
@@ -13,22 +15,29 @@ public static class VirtualPetEndpoints
         group.MapGet("/", GetPets)
             .WithName("Get all pets");
 
-        group.MapGet("/{id}", GetPetById)
-            .WithName("Get pet by ID");
+        group.MapGet("/{id:guid}", GetPetByOwnerId)
+            .WithName("Get pet by owner id");
 
         group.MapPost("/", CreatePet)
             .WithName("Create pet");
 
         group.MapPut("/{id}", UpdatePet)
-            .WithName("Update pet");
+            .WithName("Update pet by owner id");
 
         group.MapDelete("/{id}", DeletePet)
-            .WithName("Delete pet");
+            .WithName("Delete pet by owner id");
     }
 
     private static IResult GetPets() => Results.Ok();
 
-    private static IResult GetPetById(Guid id) => Results.Ok();
+    private static IResult GetPetByOwnerId(Guid id, IQueryHandler<GetPetQuery, PetDto> getPetQueryHandler) {
+        var query = new GetPetQuery(id);
+        var result = getPetQueryHandler.HandleAsync(query, CancellationToken.None).GetAwaiter().GetResult();
+
+        return result.IsSuccess
+            ? Results.Ok(result.Value)
+            : Results.NotFound();
+    }
 
     private static IResult CreatePet(ICommandHandler<CreatePetCommand> createPetCommandHandler, CreatePetRequest request) {
         var command = request.ToCommand();

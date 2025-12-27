@@ -5,14 +5,14 @@ using NSubstitute;
 using VirtualPet.Application.Commands;
 using VirtualPet.Domain.Pet;
 
-namespace VirtualPet.Tests.Unit.Application.Command;
+namespace VirtualPet.Tests.Unit.Application.Commands;
 
-public class CreatePetCommandTest
+public class CreatePetTest
 {
     private readonly CreatePetCommandHandler _handler;
     private readonly IPetRepository _petRepository;
     private const string A_PET_GUID = "11111111-1111-1111-1111-111111111111";
-    public CreatePetCommandTest()
+    public CreatePetTest()
     {
         var mockGuidGenerator = Substitute.For<IGuidGenerator>();
         _petRepository = Substitute.For<IPetRepository>();
