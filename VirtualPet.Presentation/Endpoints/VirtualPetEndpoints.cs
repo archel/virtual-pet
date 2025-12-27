@@ -32,8 +32,11 @@ public static class VirtualPetEndpoints
 
     private static IResult CreatePet(ICommandHandler<CreatePetCommand> createPetCommandHandler, CreatePetRequest request) {
         var command = request.ToCommand();
-        createPetCommandHandler.HandleAsync(command, CancellationToken.None).GetAwaiter().GetResult();
-        return Results.Created($"/api/pets/{command.OwnerId}", null);
+        var result = createPetCommandHandler.HandleAsync(command, CancellationToken.None).GetAwaiter().GetResult();
+        
+        return result.IsSuccess
+            ? Results.Created($"/api/pets/{command.OwnerId}", null)
+            : Results.Problem(detail: result.Error?.Message, statusCode: StatusCodes.Status400BadRequest);
     }
 
     private static IResult UpdatePet(Guid id) => Results.NoContent();

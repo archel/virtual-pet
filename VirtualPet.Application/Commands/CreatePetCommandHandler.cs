@@ -10,16 +10,16 @@ public record CreatePetCommand(
 
 public class CreatePetCommandHandler(IPetRepository petRepository, IGuidGenerator guidGenerator) : ICommandHandler<CreatePetCommand>
 {
-    public async Task HandleAsync(CreatePetCommand command, CancellationToken cancellationToken)
+    public async Task<Result> HandleAsync(CreatePetCommand command, CancellationToken cancellationToken)
     {
 
         if (await petRepository.GetByOwnerIdAsync(command.OwnerId, cancellationToken) is null)
         {
             var pet = Pet.Create(guidGenerator.NewGuid(), command.OwnerId, command.Name);
             await petRepository.AddAsync(pet, cancellationToken);
-            return;
+            return Result.Success();
         }
 
-        throw new InvalidOperationException("Owner already has a pet.");
+        return Result.Failure(OwnerAlreadyHasPetException.Create(command.OwnerId.ToString()));
     }
 }

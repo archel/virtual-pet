@@ -36,10 +36,12 @@ public class CreatePetCommandTest
             );
 
         // Act
-        await _handler.HandleAsync(command, cancellationToken);
+        var result = await _handler.HandleAsync(command, cancellationToken);
+        
         // Assert
         var expectedPet = Pet.Create(petGuid, ownerId, "Buddy");
         capturedPet.Should().BeEquivalentTo(expectedPet);
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -53,10 +55,10 @@ public class CreatePetCommandTest
         var cancellationToken = CancellationToken.None;
         _petRepository.GetByOwnerIdAsync(ownerId, cancellationToken).Returns(existingPet);
 
+        var result = await _handler.HandleAsync(command, cancellationToken);
+        
         // Act & Assert
-        await FluentActions
-            .Awaiting(() => _handler.HandleAsync(command, cancellationToken))
-            .Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("Owner already has a pet.");
+        result.IsSuccess.Should().BeFalse();
+        result.Error.Should().BeEquivalentTo(OwnerAlreadyHasPetException.Create(ownerId.ToString()));
     }
 }
